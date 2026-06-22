@@ -88,6 +88,9 @@ public partial class App : Application
         base.OnExit(e);
     }
 
+    /// <summary>
+    /// Обрабатывает необработанные исключения UI-потока.
+    /// </summary>
     private static void OnDispatcherUnhandledException(
         object sender,
         DispatcherUnhandledExceptionEventArgs e)
@@ -101,6 +104,9 @@ public partial class App : Application
         e.Handled = true;
     }
 
+    /// <summary>
+    /// Обрабатывает необработанные исключения домена приложения.
+    /// </summary>
     private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
         if (e.ExceptionObject is Exception exception)
@@ -109,6 +115,9 @@ public partial class App : Application
         }
     }
 
+    /// <summary>
+    /// Обрабатывает ненаблюдаемые исключения фоновых задач.
+    /// </summary>
     private static void OnUnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
     {
         Log.Error(e.Exception, "Необработанное исключение фоновой задачи");

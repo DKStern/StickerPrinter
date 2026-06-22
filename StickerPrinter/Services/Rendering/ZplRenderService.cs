@@ -157,6 +157,9 @@ public sealed class ZplRenderService : IZplRenderService
         }
     }
 
+    /// <summary>
+    /// Проверяет корректность настроек сервиса рендеринга.
+    /// </summary>
     private static void ValidateOptions(ZplRendererOptions options)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(options.BaseUrl);
@@ -173,12 +176,18 @@ public sealed class ZplRenderService : IZplRenderService
         }
     }
 
+    /// <summary>
+    /// Вычисляет короткий hash значения для безопасного логирования.
+    /// </summary>
     private static string GetShortHash(string value)
     {
         var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(value));
         return Convert.ToHexString(bytes, 0, 8);
     }
 
+    /// <summary>
+    /// Создает HTTP-запрос к сервису рендеринга.
+    /// </summary>
     private HttpRequestMessage CreateHttpRequest(RenderRequest request)
     {
         var endpoint = BuildEndpoint(request);
@@ -192,6 +201,9 @@ public sealed class ZplRenderService : IZplRenderService
         return httpRequest;
     }
 
+    /// <summary>
+    /// Формирует endpoint рендеринга из шаблона и параметров этикетки.
+    /// </summary>
     private string BuildEndpoint(RenderRequest request)
     {
         return _options.RenderEndpoint
@@ -200,6 +212,9 @@ public sealed class ZplRenderService : IZplRenderService
             .Replace("{height}", request.Height.ToString(CultureInfo.InvariantCulture), StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Пытается прочитать сообщение об ошибке из ответа API.
+    /// </summary>
     private static async Task<string?> TryReadApiErrorMessageAsync(
         HttpResponseMessage response,
         CancellationToken cancellationToken)
@@ -219,6 +234,9 @@ public sealed class ZplRenderService : IZplRenderService
         }
     }
 
+    /// <summary>
+    /// Создает пользовательское сообщение по HTTP-статусу и ответу API.
+    /// </summary>
     private static string CreateUserMessage(HttpStatusCode statusCode, string? apiMessage)
     {
         if (!string.IsNullOrWhiteSpace(apiMessage))

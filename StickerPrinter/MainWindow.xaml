@@ -8,160 +8,347 @@
         Title="StickerPrinter"
         Height="720"
         Width="1280"
-        MinHeight="720"
-        MinWidth="1280"
+        MinHeight="620"
+        MinWidth="1040"
+        Background="#F2F5F4"
+        FontFamily="Segoe UI"
+        FontSize="14"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+        <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFFFF" />
+        <SolidColorBrush x:Key="SubtleSurfaceBrush" Color="#F7FAF9" />
+        <SolidColorBrush x:Key="BorderLineBrush" Color="#D8E1DD" />
+        <SolidColorBrush x:Key="PrimaryBrush" Color="#0F766E" />
+        <SolidColorBrush x:Key="PrimaryHoverBrush" Color="#115E59" />
+        <SolidColorBrush x:Key="TextBrush" Color="#17211F" />
+        <SolidColorBrush x:Key="MutedTextBrush" Color="#66736F" />
+        <SolidColorBrush x:Key="EditorBackgroundBrush" Color="#101817" />
+        <SolidColorBrush x:Key="EditorTextBrush" Color="#D7F3EA" />
+
+        <Style x:Key="PanelBorderStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLineBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="18" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="18"
+                                      Color="#1D2A27"
+                                      Direction="270"
+                                      Opacity="0.10"
+                                      ShadowDepth="4" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SectionTitleStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,0,0,12" />
+        </Style>
+
+        <Style x:Key="CaptionTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource MutedTextBrush}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style x:Key="FieldLabelStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource MutedTextBrush}" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,0,0,6" />
+        </Style>
+
+        <Style x:Key="InputTextBoxStyle" TargetType="TextBox">
+            <Setter Property="MinHeight" Value="38" />
+            <Setter Property="Padding" Value="10,8" />
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+            <Setter Property="Background" Value="#FFFFFFFF" />
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLineBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="42" />
+            <Setter Property="MinWidth" Value="132" />
+            <Setter Property="Padding" Value="18,0" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Chrome"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="7">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Chrome" Property="Background" Value="{StaticResource PrimaryHoverBrush}" />
+                                <Setter TargetName="Chrome" Property="BorderBrush" Value="{StaticResource PrimaryHoverBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Chrome" Property="Opacity" Value="0.45" />
+                                <Setter Property="Cursor" Value="Arrow" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SecondaryButtonStyle" TargetType="Button" BasedOn="{StaticResource PrimaryButtonStyle}">
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+            <Setter Property="Background" Value="#FFFFFFFF" />
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLineBrush}" />
+            <Setter Property="MinWidth" Value="146" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Chrome"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="7">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Chrome" Property="Background" Value="#F3F7F6" />
+                                <Setter TargetName="Chrome" Property="BorderBrush" Value="#B8C8C3" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Chrome" Property="Opacity" Value="0.45" />
+                                <Setter Property="Cursor" Value="Arrow" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
-    <Grid Margin="16">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" MinWidth="380" />
-            <ColumnDefinition Width="6" />
-            <ColumnDefinition Width="420" MinWidth="320" />
-        </Grid.ColumnDefinitions>
+    <Grid Margin="24" ClipToBounds="True">
+        <Grid ClipToBounds="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="520" />
+                <ColumnDefinition Width="16" />
+                <ColumnDefinition Width="420" MinWidth="340" />
+            </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <TextBlock Text="ZPL editor"
-                       FontSize="18"
-                       FontWeight="SemiBold"
-                       Margin="0,0,0,10" />
-
-            <TextBox Grid.Row="1"
-                     Text="{Binding ZplCode, UpdateSourceTrigger=PropertyChanged}"
-                     FontFamily="Consolas"
-                     FontSize="14"
-                     VerticalScrollBarVisibility="Auto"
-                     HorizontalScrollBarVisibility="Auto"
-                     TextWrapping="NoWrap"
-                     AcceptsReturn="True"
-                     AcceptsTab="True" />
-        </Grid>
-
-        <GridSplitter Grid.Column="1"
-                      Width="6"
-                      HorizontalAlignment="Stretch"
-                      VerticalAlignment="Stretch"
-                      Background="#FFE0E0E0" />
-
-        <Grid Grid.Column="2" Margin="18,0,0,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <StackPanel Grid.Row="0">
-                <TextBlock Text="Settings"
-                           FontSize="18"
-                           FontWeight="SemiBold"
-                           Margin="0,0,0,12" />
-
+            <Border Style="{StaticResource PanelBorderStyle}" Padding="0">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="90" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0"
-                               Grid.Column="0"
-                               Text="Width:"
-                               VerticalAlignment="Center"
-                               Margin="0,0,12,8" />
-                    <TextBox Grid.Row="0"
-                             Grid.Column="1"
-                             Text="{Binding Width, UpdateSourceTrigger=PropertyChanged}"
-                             Margin="0,0,0,8" />
+                    <Grid Margin="18,16,18,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Row="1"
-                               Grid.Column="0"
-                               Text="Height:"
-                               VerticalAlignment="Center"
-                               Margin="0,0,12,8" />
-                    <TextBox Grid.Row="1"
-                             Grid.Column="1"
-                             Text="{Binding Height, UpdateSourceTrigger=PropertyChanged}"
-                             Margin="0,0,0,8" />
+                        <StackPanel>
+                            <TextBlock Text="Редактор ZPL"
+                                       Style="{StaticResource SectionTitleStyle}"
+                                       Margin="0,0,0,2" />
+                            <TextBlock Text="Изменения не отправляются автоматически"
+                                       Style="{StaticResource CaptionTextStyle}" />
+                        </StackPanel>
 
-                    <TextBlock Grid.Row="2"
-                               Grid.Column="0"
-                               Text="Density:"
-                               VerticalAlignment="Center"
-                               Margin="0,0,12,0" />
-                    <ComboBox Grid.Row="2"
-                              Grid.Column="1"
-                              ItemsSource="{Binding DensityOptions}"
-                              SelectedItem="{Binding SelectedDensity}"
-                              MinHeight="28">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate DataType="{x:Type models:RenderDensity}">
-                                <TextBlock>
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Text" Value="8 dpmm" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding}" Value="{x:Static models:RenderDensity.Dpmm12}">
-                                                    <Setter Property="Text" Value="12 dpmm" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding}" Value="{x:Static models:RenderDensity.Dpmm24}">
-                                                    <Setter Property="Text" Value="24 dpmm" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                </Grid>
-            </StackPanel>
+                        <Border Grid.Column="1"
+                                Background="#F0F5F3"
+                                BorderBrush="{StaticResource BorderLineBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="10,6"
+                                VerticalAlignment="Top">
+                            <TextBlock Text="UTF-8 / 256 KB"
+                                       Foreground="{StaticResource MutedTextBrush}"
+                                       FontSize="12"
+                                       FontWeight="SemiBold" />
+                        </Border>
+                    </Grid>
 
-            <StackPanel Grid.Row="1"
-                        Orientation="Horizontal"
-                        Margin="0,22,0,18">
-                <Button Content="Создать"
-                        Command="{Binding RenderCommand}"
-                        MinWidth="120"
-                        Height="34"
-                        Margin="0,0,10,0" />
-                <Button Content="Download PNG"
-                        Command="{Binding DownloadPngCommand}"
-                        MinWidth="130"
-                        Height="34" />
-            </StackPanel>
-
-            <Border Grid.Row="2"
-                    BorderBrush="#FFCFCFCF"
-                    BorderThickness="1"
-                    Background="#FFF7F7F7"
-                    Padding="14">
-                <Grid>
-                    <TextBlock Text="{Binding PreviewMessage}"
-                               TextWrapping="Wrap"
-                               TextAlignment="Center"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Foreground="#FF555555"
-                               Visibility="{Binding IsPreviewMessageVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
-                    <Image Source="{Binding PreviewImage}"
-                           Stretch="Uniform"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Visibility="{Binding IsPreviewImageVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <Border Grid.Row="1"
+                            Margin="18,0,18,18"
+                            Background="{StaticResource EditorBackgroundBrush}"
+                            BorderBrush="#20302D"
+                            BorderThickness="1"
+                            CornerRadius="8">
+                        <TextBox Text="{Binding ZplCode, UpdateSourceTrigger=PropertyChanged}"
+                                 Background="{StaticResource EditorBackgroundBrush}"
+                                 Foreground="{StaticResource EditorTextBrush}"
+                                 CaretBrush="#7EE2C8"
+                                 SelectionBrush="#0F766E"
+                                 BorderThickness="0"
+                                 Padding="16"
+                                 FontFamily="Cascadia Mono, Consolas"
+                                 FontSize="14"
+                                 VerticalScrollBarVisibility="Auto"
+                                 HorizontalScrollBarVisibility="Auto"
+                                 TextWrapping="NoWrap"
+                                 AcceptsReturn="True"
+                                 AcceptsTab="True" />
+                    </Border>
                 </Grid>
             </Border>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="16" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Border Style="{StaticResource PanelBorderStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Параметры этикетки"
+                                   Style="{StaticResource SectionTitleStyle}" />
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="12" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel>
+                                <TextBlock Text="Ширина, inch"
+                                           Style="{StaticResource FieldLabelStyle}" />
+                                <TextBox Text="{Binding Width, UpdateSourceTrigger=PropertyChanged}"
+                                         Style="{StaticResource InputTextBoxStyle}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Высота, inch"
+                                           Style="{StaticResource FieldLabelStyle}" />
+                                <TextBox Text="{Binding Height, UpdateSourceTrigger=PropertyChanged}"
+                                         Style="{StaticResource InputTextBoxStyle}" />
+                            </StackPanel>
+                        </Grid>
+
+                        <StackPanel Margin="0,14,0,0">
+                            <TextBlock Text="Плотность печати"
+                                       Style="{StaticResource FieldLabelStyle}" />
+                            <ComboBox ItemsSource="{Binding DensityOptions}"
+                                      SelectedItem="{Binding SelectedDensity}"
+                                      MinHeight="38"
+                                      Padding="8,6"
+                                      BorderBrush="{StaticResource BorderLineBrush}"
+                                      Background="#FFFFFFFF">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type models:RenderDensity}">
+                                        <TextBlock>
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Text" Value="8 dpmm" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding}" Value="{x:Static models:RenderDensity.Dpmm12}">
+                                                            <Setter Property="Text" Value="12 dpmm" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding}" Value="{x:Static models:RenderDensity.Dpmm24}">
+                                                            <Setter Property="Text" Value="24 dpmm" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,18,0,0">
+                            <Button Content="Создать"
+                                    Command="{Binding RenderCommand}"
+                                    Style="{StaticResource PrimaryButtonStyle}"
+                                    Margin="0,0,10,0" />
+                            <Button Content="Сохранить PNG"
+                                    Command="{Binding DownloadPngCommand}"
+                                    Style="{StaticResource SecondaryButtonStyle}" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="2" Style="{StaticResource PanelBorderStyle}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel>
+                                <TextBlock Text="Предпросмотр"
+                                           Style="{StaticResource SectionTitleStyle}"
+                                           Margin="0,0,0,2" />
+                                <TextBlock Text="PNG-результат последнего рендера"
+                                           Style="{StaticResource CaptionTextStyle}" />
+                            </StackPanel>
+
+                            <Ellipse Grid.Column="1"
+                                     Width="10"
+                                     Height="10"
+                                     Fill="#F59E0B"
+                                     VerticalAlignment="Top"
+                                     Margin="0,7,0,0" />
+                        </Grid>
+
+                        <Border Grid.Row="1"
+                                Margin="0,16,0,0"
+                                Background="{StaticResource SubtleSurfaceBrush}"
+                                BorderBrush="{StaticResource BorderLineBrush}"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="16">
+                            <Grid>
+                                <TextBlock Text="{Binding PreviewMessage}"
+                                           TextWrapping="Wrap"
+                                           TextAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Foreground="{StaticResource MutedTextBrush}"
+                                           FontSize="14"
+                                           LineHeight="21"
+                                           Visibility="{Binding IsPreviewMessageVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                                <Border Background="White"
+                                        BorderBrush="#E5ECE9"
+                                        BorderThickness="1"
+                                        Padding="12"
+                                        Visibility="{Binding IsPreviewImageVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <Image Source="{Binding PreviewImage}"
+                                           Stretch="Uniform"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center" />
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

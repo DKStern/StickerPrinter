@@ -27,8 +27,8 @@ public sealed class MainWindowViewModel : ViewModelBase
     private readonly RelayCommand _downloadPngCommand;
 
     private string _zplCode = "^XA\r\n^FO50,50^A0N,40,40^FDHello, ZPL!^FS\r\n^XZ";
-    private string _width = "4";
-    private string _height = "6";
+    private string _width = "2";
+    private string _height = "1";
     private RenderDensity _selectedDensity = RenderDensity.Dpmm8;
     private PreviewState _previewState = PreviewState.Initial;
     private BitmapImage? _previewImage;
@@ -170,14 +170,23 @@ public sealed class MainWindowViewModel : ViewModelBase
     /// </summary>
     public ICommand DownloadPngCommand => _downloadPngCommand;
 
+    /// <summary>
+    /// Проверяет доступность команды рендеринга.
+    /// </summary>
     private bool CanRender() =>
         PreviewState is not PreviewState.Rendering &&
         !string.IsNullOrWhiteSpace(ZplCode);
 
+    /// <summary>
+    /// Проверяет доступность команды сохранения PNG.
+    /// </summary>
     private bool CanDownloadPng() =>
         PreviewState is PreviewState.Rendered &&
         _lastPngBytes is { Length: > 0 };
 
+    /// <summary>
+    /// Выполняет рендеринг этикетки и обновляет предпросмотр.
+    /// </summary>
     private async Task RenderAsync(CancellationToken cancellationToken)
     {
         try
@@ -227,6 +236,9 @@ public sealed class MainWindowViewModel : ViewModelBase
         }
     }
 
+    /// <summary>
+    /// Сохраняет последний успешно созданный PNG-файл.
+    /// </summary>
     private async void DownloadPng()
     {
         if (_lastPngBytes is null)
@@ -249,6 +261,9 @@ public sealed class MainWindowViewModel : ViewModelBase
         _userMessageService.ShowError(result.ErrorMessage ?? "Не удалось сохранить PNG-файл.");
     }
 
+    /// <summary>
+    /// Создает параметры рендеринга из значений формы.
+    /// </summary>
     private bool TryCreateSettings(out LabelRenderSettings settings, out string errorMessage)
     {
         settings = new LabelRenderSettings(0, 0, SelectedDensity);
@@ -270,6 +285,9 @@ public sealed class MainWindowViewModel : ViewModelBase
         return true;
     }
 
+    /// <summary>
+    /// Переводит предпросмотр в состояние ошибки.
+    /// </summary>
     private void SetError(string message)
     {
         PreviewImage = null;
@@ -279,12 +297,18 @@ public sealed class MainWindowViewModel : ViewModelBase
         RaiseCommandStates();
     }
 
+    /// <summary>
+    /// Уведомляет команды об изменении их доступности.
+    /// </summary>
     private void RaiseCommandStates()
     {
         _renderCommand.RaiseCanExecuteChanged();
         _downloadPngCommand.RaiseCanExecuteChanged();
     }
 
+    /// <summary>
+    /// Создает изображение WPF из PNG-байтов.
+    /// </summary>
     private static BitmapImage CreateBitmapImage(byte[] pngBytes)
     {
         using var stream = new MemoryStream(pngBytes);
